@@ -8,105 +8,139 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --color-primary-dark: #0A2463;
-            --color-primary-medium: #3E92CC;
-            --color-accent-yellow: #FFF275;
-            --color-accent-teal: #1B998B;
-            --color-accent-pink: #D81E5B;
-            --color-background-light: #F0F8FF;
-            --color-text-default: #334155; /* Default body text */
-            --color-text-light: #FFFFFF;
-            --color-text-subtle-dark: #4A5568; /* For less prominent dark text */
-            --shadow-default: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--color-background-light);
-            color: var(--color-text-default);
+            background-color: #F0F8FF; 
         }
-
         .chart-container {
             position: relative;
             width: 100%;
-            max-width: 450px; /* Or use Tailwind max-w-md if 448px is acceptable */
+            max-width: 450px;
             margin-left: auto;
             margin-right: auto;
-            height: 300px; /* Base height for mobile */
+            height: 300px;
             max-height: 350px;
         }
-
-        @media (min-width: 768px) { /* md breakpoint */
+        @media (min-width: 768px) {
             .chart-container {
                 height: 350px;
                 max-height: 400px;
             }
         }
-
-        /* Minimal custom CSS; prefer Tailwind utilities where possible */
-        .section-title-custom { /* For very specific font size not in default Tailwind */
-            font-size: 1.75rem; /* 28px */
+        .stat-card {
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            text-align: center;
         }
-        .content-text-custom { /* For very specific font size not in default Tailwind */
-            font-size: 0.95rem; /* 15.2px */
+        .stat-value {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: #0A2463;
+        }
+        .stat-label {
+            font-size: 0.875rem;
+            color: #3E92CC;
+            margin-top: 0.25rem;
+        }
+        .icon-style {
+            font-size: 1.75rem;
+            margin-right: 0.5rem;
+            color: #1B998B;
+        }
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #0A2463;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .sub-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #0A2463;
+            margin-bottom: 0.75rem;
+        }
+        .content-text {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #334155; 
+        }
+        .kerala-food-card {
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border-left: 5px solid #1B998B;
+        }
+        .meal-card {
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            margin-bottom: 1rem;
+        }
+        .meal-time {
+            font-weight: 600;
+            color: #D81E5B;
         }
     </style>
 </head>
-<body class="text-[var(--color-text-default)]">
-    <header class="bg-gradient-to-r from-[var(--color-primary-dark)] to-[var(--color-primary-medium)] text-[var(--color-text-light)] py-12 px-4 text-center">
+<body class="text-gray-800">
+    <header class="bg-gradient-to-r from-[#0A2463] to-[#3E92CC] text-white py-12 px-4 text-center">
         <h1 class="text-4xl font-bold mb-2">Your Path to 65kg: A Keralan Weight Gain Journey</h1>
         <p class="text-lg max-w-2xl mx-auto">A personalized non-dairy meal plan for healthy weight gain and enhanced calisthenics performance in Palakkad, Kerala.</p>
     </header>
 
     <main class="container mx-auto p-4 md:p-8">
 
-        <section id="introduction" class="mb-12 bg-[var(--color-text-light)] rounded-lg shadow-lg p-6 md:p-8">
-            <h2 class="section-title-custom font-bold text-[var(--color-primary-dark)] mb-4 text-center md:text-3xl">Meet Your Goals!</h2>
-            <p class="content-text-custom leading-relaxed text-center mb-6">This plan is tailored for a 27-year-old individual, 173cm tall, starting at 55kg, aiming to reach 65kg in 2 months through healthier eating and regular calisthenics.</p>
+        <section id="introduction" class="mb-12 bg-white rounded-lg shadow-lg p-6 md:p-8">
+            <h2 class="section-title">Meet Your Goals!</h2>
+            <p class="content-text text-center mb-6">This plan is tailored for a 27-year-old individual, 173cm tall, starting at 55kg, aiming to reach 65kg in 2 months through healthier eating and regular calisthenics.</p>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                <div class="bg-[var(--color-accent-yellow)] text-[var(--color-primary-dark)] rounded-lg p-6 shadow-md">
-                    <div class="text-4xl font-bold text-[var(--color-primary-dark)]">🎯 10<span class="text-xl align-baseline">kg</span></div>
-                    <div class="text-sm text-[var(--color-primary-medium)] mt-1">Target Gain</div>
+                <div class="stat-card bg-[#FFF275] text-[#0A2463]">
+                    <div class="stat-value">🎯 10<span class="text-xl">kg</span></div>
+                    <div class="stat-label">Target Gain</div>
                 </div>
-                <div class="bg-[var(--color-accent-yellow)] text-[var(--color-primary-dark)] rounded-lg p-6 shadow-md">
-                    <div class="text-4xl font-bold text-[var(--color-primary-dark)]">⏱️ 2</div>
-                    <div class="text-sm text-[var(--color-primary-medium)] mt-1">Months</div>
+                <div class="stat-card bg-[#FFF275] text-[#0A2463]">
+                    <div class="stat-value">⏱️ 2<span class="text-xl"></span></div>
+                    <div class="stat-label">Months</div>
                 </div>
-                <div class="bg-[var(--color-text-light)] rounded-lg p-6 shadow-md">
-                    <div class="text-4xl font-bold text-[var(--color-primary-dark)]">👤 55<span class="text-xl align-baseline">kg</span></div>
-                    <div class="text-sm text-[var(--color-primary-medium)] mt-1">Starting Weight</div>
+                <div class="stat-card">
+                    <div class="stat-value">👤 55<span class="text-xl">kg</span></div>
+                    <div class="stat-label">Starting Weight</div>
                 </div>
-                <div class="bg-[var(--color-text-light)] rounded-lg p-6 shadow-md">
-                    <div class="text-4xl font-bold text-[var(--color-primary-dark)]">🏁 65<span class="text-xl align-baseline">kg</span></div>
-                    <div class="text-sm text-[var(--color-primary-medium)] mt-1">Goal Weight</div>
+                <div class="stat-card">
+                    <div class="stat-value">🏁 65<span class="text-xl">kg</span></div>
+                    <div class="stat-label">Goal Weight</div>
                 </div>
             </div>
         </section>
 
-        <section id="nutritional-blueprint" class="mb-12 bg-[var(--color-text-light)] rounded-lg shadow-lg p-6 md:p-8">
-            <h2 class="section-title-custom font-bold text-[var(--color-primary-dark)] mb-4 text-center md:text-3xl">Your Nutritional Blueprint</h2>
-            <p class="content-text-custom leading-relaxed text-center mb-6">To fuel your growth and calisthenics, we've calculated your specific energy needs. Your body needs a consistent caloric surplus to build muscle effectively.</p>
+        <section id="nutritional-blueprint" class="mb-12 bg-white rounded-lg shadow-lg p-6 md:p-8">
+            <h2 class="section-title">Your Nutritional Blueprint</h2>
+            <p class="content-text text-center mb-6">To fuel your growth and calisthenics, we've calculated your specific energy needs. Your body needs a consistent caloric surplus to build muscle effectively.</p>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div class="bg-[var(--color-text-light)] rounded-lg p-6 shadow-md text-center">
-                    <div class="text-4xl font-bold text-[var(--color-primary-dark)]">🔥 1501</div>
-                    <div class="text-sm text-[var(--color-primary-medium)] mt-1">Basal Metabolic Rate (BMR kcal)</div>
+                <div class="stat-card">
+                    <div class="stat-value">🔥 1501</div>
+                    <div class="stat-label">Basal Metabolic Rate (BMR kcal)</div>
                 </div>
-                <div class="bg-[var(--color-text-light)] rounded-lg p-6 shadow-md text-center">
-                    <div class="text-4xl font-bold text-[var(--color-primary-dark)]">🏃 2330</div>
-                    <div class="text-sm text-[var(--color-primary-medium)] mt-1">Total Daily Energy Expenditure (TDEE kcal)</div>
+                <div class="stat-card">
+                    <div class="stat-value">🏃 2330</div>
+                    <div class="stat-label">Total Daily Energy Expenditure (TDEE kcal)</div>
                 </div>
-                <div class="bg-[var(--color-primary-medium)] text-[var(--color-text-light)] rounded-lg p-6 shadow-md text-center">
-                    <div class="text-4xl font-bold">🎯 ~3200</div>
-                    <div class="text-sm text-gray-100 mt-1">Target Daily Caloric Intake (kcal)</div>
-                    <p class="text-xs mt-1 text-gray-200">(Approx. +870 kcal surplus)</p>
+                <div class="stat-card bg-[#3E92CC] text-white">
+                    <div class="stat-value text-white">🎯 ~3200</div>
+                    <div class="stat-label text-gray-100">Target Daily Caloric Intake (kcal)</div>
+                     <p class="text-xs mt-1 text-gray-200">(Approx. +870 kcal surplus)</p>
                 </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
                 <div>
-                    <h3 class="text-xl font-semibold text-[var(--color-primary-dark)] mb-3 text-center md:text-left">Macronutrient Power Balance</h3>
-                    <p class="content-text-custom leading-relaxed mb-4">Your ~3200 daily calories are strategically divided to optimize muscle growth, energy, and overall health. This balance supports your calisthenics routine and recovery.</p>
-                    <ul class="list-disc list-inside content-text-custom leading-relaxed space-y-1">
+                    <h3 class="sub-title text-center md:text-left">Macronutrient Power Balance</h3>
+                    <p class="content-text mb-4">Your ~3200 daily calories are strategically divided to optimize muscle growth, energy, and overall health. This balance supports your calisthenics routine and recovery.</p>
+                    <ul class="list-disc list-inside content-text space-y-1">
                         <li><strong>Protein (17.5%):</strong> ~140g for muscle repair & growth.</li>
                         <li><strong>Carbohydrates (57.2%):</strong> ~457.5g for sustained energy & glycogen.</li>
                         <li><strong>Fats (25.3%):</strong> ~90g for calorie density & hormone health.</li>
@@ -118,14 +152,14 @@
             </div>
         </section>
         
-        <section id="keralan-foods" class="mb-12 bg-[var(--color-text-light)] rounded-lg shadow-lg p-6 md:p-8">
-            <h2 class="section-title-custom font-bold text-[var(--color-primary-dark)] mb-6 text-center md:text-3xl">Fueling Your Gains: Keralan Style!</h2>
-            <p class="content-text-custom leading-relaxed text-center mb-8">Embrace the rich, nutritious, and non-dairy foods of Kerala. This plan focuses on easily available and simple-to-cook options from Palakkad to help you meet your goals deliciously.</p>
+        <section id="keralan-foods" class="mb-12 bg-white rounded-lg shadow-lg p-6 md:p-8">
+            <h2 class="section-title">Fueling Your Gains: Keralan Style!</h2>
+            <p class="content-text text-center mb-8">Embrace the rich, nutritious, and non-dairy foods of Kerala. This plan focuses on easily available and simple-to-cook options from Palakkad to help you meet your goals deliciously.</p>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-[var(--color-text-light)] rounded-lg p-6 shadow-md border-l-[5px] border-[var(--color-accent-teal)]">
-                    <h3 class="text-xl font-semibold text-[var(--color-primary-dark)] mb-3 flex items-center"><span aria-hidden="true" class="text-[1.75rem] mr-2 text-[var(--color-accent-teal)]">🐟</span>Protein Powerhouses</h3>
-                    <p class="content-text-custom leading-relaxed mb-2">Essential for muscle repair and growth. Enjoy these local favorites:</p>
-                    <ul class="list-disc list-inside content-text-custom leading-relaxed space-y-1">
+                <div class="kerala-food-card">
+                    <h3 class="sub-title flex items-center"><span class="icon-style">🐟</span>Protein Powerhouses</h3>
+                    <p class="content-text mb-2">Essential for muscle repair and growth. Enjoy these local favorites:</p>
+                    <ul class="list-disc list-inside content-text space-y-1">
                         <li>Fish (Neymeen, Mathi, Ayala)</li>
                         <li>Chicken (Nadan Kozhi Curry)</li>
                         <li>Eggs (Mutta Roast)</li>
@@ -133,10 +167,10 @@
                         <li>Soya Chunks / Tofu</li>
                     </ul>
                 </div>
-                <div class="bg-[var(--color-text-light)] rounded-lg p-6 shadow-md border-l-[5px] border-[var(--color-accent-teal)]">
-                    <h3 class="text-xl font-semibold text-[var(--color-primary-dark)] mb-3 flex items-center"><span aria-hidden="true" class="text-[1.75rem] mr-2 text-[var(--color-accent-teal)]">🍚</span>Energy-Boosting Carbs</h3>
-                    <p class="content-text-custom leading-relaxed mb-2">Your primary fuel for intense workouts and daily activities:</p>
-                    <ul class="list-disc list-inside content-text-custom leading-relaxed space-y-1">
+                <div class="kerala-food-card">
+                    <h3 class="sub-title flex items-center"><span class="icon-style">🍚</span>Energy-Boosting Carbs</h3>
+                    <p class="content-text mb-2">Your primary fuel for intense workouts and daily activities:</p>
+                    <ul class="list-disc list-inside content-text space-y-1">
                         <li>Matta Rice / Brown Rice</li>
                         <li>Puttu, Appam, Idiyappam</li>
                         <li>Kappa (Tapioca)</li>
@@ -144,10 +178,10 @@
                         <li>Sweet Potatoes, Yams</li>
                     </ul>
                 </div>
-                <div class="bg-[var(--color-text-light)] rounded-lg p-6 shadow-md border-l-[5px] border-[var(--color-accent-teal)]">
-                    <h3 class="text-xl font-semibold text-[var(--color-primary-dark)] mb-3 flex items-center"><span aria-hidden="true" class="text-[1.75rem] mr-2 text-[var(--color-accent-teal)]">🥥</span>Calorie-Dense Healthy Fats</h3>
-                    <p class="content-text-custom leading-relaxed mb-2">Crucial for calorie density, hormone production, and vitamin absorption:</p>
-                    <ul class="list-disc list-inside content-text-custom leading-relaxed space-y-1">
+                <div class="kerala-food-card">
+                    <h3 class="sub-title flex items-center"><span class="icon-style">🥥</span>Calorie-Dense Healthy Fats</h3>
+                    <p class="content-text mb-2">Crucial for calorie density, hormone production, and vitamin absorption:</p>
+                    <ul class="list-disc list-inside content-text space-y-1">
                         <li>Coconut (Oil, Milk, Grated)</li>
                         <li>Nuts (Almonds, Cashews, Peanuts)</li>
                         <li>Seeds (Flax, Chia, Sesame)</li>
@@ -157,98 +191,97 @@
             </div>
         </section>
 
-        <section id="meal-framework" class="mb-12 bg-[var(--color-text-light)] rounded-lg shadow-lg p-6 md:p-8">
-            <h2 class="section-title-custom font-bold text-[var(--color-primary-dark)] mb-6 text-center md:text-3xl">Your Daily Meal Framework (Sample)</h2>
-            <p class="content-text-custom leading-relaxed text-center mb-8">Here’s a glimpse of how a typical day of eating might look to hit your ~3200 calorie target. Remember, consistency is key, and portion sizes can be adjusted based on your progress.</p>
+        <section id="meal-framework" class="mb-12 bg-white rounded-lg shadow-lg p-6 md:p-8">
+            <h2 class="section-title">Your Daily Meal Framework (Sample)</h2>
+            <p class="content-text text-center mb-8">Here’s a glimpse of how a typical day of eating might look to hit your ~3200 calorie target. Remember, consistency is key, and portion sizes can be adjusted based on your progress.</p>
             <div class="space-y-4">
-                <div class="bg-[var(--color-text-light)] rounded-lg p-4 shadow-md mb-4 border-l-4 border-[var(--color-primary-medium)]">
-                    <p class="content-text-custom leading-relaxed"><strong class="font-semibold text-[var(--color-accent-pink)]">🌅 Breakfast (~750 kcal):</strong> Puttu (2 pcs) with Kadala Curry (1.5 cups) + 1 Boiled Egg.</p>
+                <div class="meal-card border-l-4 border-[#3E92CC]">
+                    <p><strong class="meal-time">🌅 Breakfast (~750 kcal):</strong> Puttu (2 pcs) with Kadala Curry (1.5 cups) + 1 Boiled Egg.</p>
                 </div>
-                <div class="bg-[var(--color-text-light)] rounded-lg p-4 shadow-md mb-4 border-l-4 border-[var(--color-accent-teal)]">
-                    <p class="content-text-custom leading-relaxed"><strong class="font-semibold text-[var(--color-accent-pink)]"> snacking (~350 kcal):</strong> Nenthra Pazham (1 large) + Mixed Nuts (30g).</p>
+                <div class="meal-card border-l-4 border-[#1B998B]">
+                    <p><strong class="meal-time"> snacking (~350 kcal):</strong> Nenthra Pazham (1 large) + Mixed Nuts (30g).</p>
                 </div>
-                <div class="bg-[var(--color-text-light)] rounded-lg p-4 shadow-md mb-4 border-l-4 border-[var(--color-primary-medium)]">
-                    <p class="content-text-custom leading-relaxed"><strong class="font-semibold text-[var(--color-accent-pink)]">☀️ Lunch (~950 kcal):</strong> Matta Rice (2 cups) with Fish Molee (150g fish) + Cabbage Thoran (1 cup).</p>
+                <div class="meal-card border-l-4 border-[#3E92CC]">
+                    <p><strong class="meal-time">☀️ Lunch (~950 kcal):</strong> Matta Rice (2 cups) with Fish Molee (150g fish) + Cabbage Thoran (1 cup).</p>
                 </div>
-                <div class="bg-[var(--color-text-light)] rounded-lg p-4 shadow-md mb-4 border-l-4 border-[var(--color-accent-teal)]">
-                    <p class="content-text-custom leading-relaxed"><strong class="font-semibold text-[var(--color-accent-pink)]"> snacking (~250 kcal):</strong> Pazham Pori (2 pcs, pan-fried).</p>
+                <div class="meal-card border-l-4 border-[#1B998B]">
+                     <p><strong class="meal-time"> snacking (~250 kcal):</strong> Pazham Pori (2 pcs, pan-fried).</p>
                 </div>
-                <div class="bg-[var(--color-text-light)] rounded-lg p-4 shadow-md mb-4 border-l-4 border-[var(--color-primary-medium)]">
-                    <p class="content-text-custom leading-relaxed"><strong class="font-semibold text-[var(--color-accent-pink)]">🌙 Dinner (~750 kcal):</strong> Chapati (4 medium) + Nadan Chicken Curry (150g chicken) + Green Salad.</p>
+                <div class="meal-card border-l-4 border-[#3E92CC]">
+                    <p><strong class="meal-time">🌙 Dinner (~750 kcal):</strong> Chapati (4 medium) + Nadan Chicken Curry (150g chicken) + Green Salad.</p>
                 </div>
             </div>
-            <p class="content-text-custom leading-relaxed text-center mt-6">Focus on 3 main meals and 2-3 calorie-dense snacks. Batch cooking and pre-chopping ingredients can simplify preparation.</p>
+             <p class="content-text text-center mt-6">Focus on 3 main meals and 2-3 calorie-dense snacks. Batch cooking and pre-chopping ingredients can simplify preparation.</p>
         </section>
 
         <section id="hydration-supplements" class="mb-12 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="bg-[var(--color-text-light)] rounded-lg shadow-lg p-6">
-                <h2 class="section-title-custom font-bold text-[var(--color-primary-dark)] mb-4 text-center md:text-3xl">💧 Hydration is Key!</h2>
-                <p class="content-text-custom leading-relaxed mb-4">Especially in Palakkad's climate and with your calisthenics routine, staying hydrated is crucial for performance, recovery, and overall health.</p>
-                <div class="bg-[var(--color-accent-yellow)] text-[var(--color-primary-dark)] rounded-lg p-6 shadow-md mb-4 text-center">
-                    <div class="text-4xl font-bold text-[var(--color-primary-dark)]">3.5 - 4.5 <span class="text-xl align-baseline">Liters</span></div>
-                    <div class="text-sm text-[var(--color-primary-medium)] mt-1">Target Daily Fluid Intake</div>
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="section-title">💧 Hydration is Key!</h2>
+                <p class="content-text mb-4">Especially in Palakkad's climate and with your calisthenics routine, staying hydrated is crucial for performance, recovery, and overall health.</p>
+                <div class="stat-card bg-[#FFF275] text-[#0A2463] mb-4">
+                    <div class="stat-value">3.5 - 4.5 <span class="text-xl">Liters</span></div>
+                    <div class="stat-label">Target Daily Fluid Intake</div>
                 </div>
-                <p class="content-text-custom leading-relaxed mb-2">Opt for these Keralan thirst-quenchers:</p>
-                <ul class="list-none space-y-2 content-text-custom leading-relaxed">
-                    <li class="flex items-center"><span aria-hidden="true" class="text-[1.75rem] mr-2 text-[var(--color-accent-teal)]">💧</span>Plain Water (your primary source)</li>
-                    <li class="flex items-center"><span aria-hidden="true" class="text-[1.75rem] mr-2 text-[var(--color-accent-teal)]">🥥</span>Tender Coconut Water (Karikku - natural electrolytes)</li>
-                    <li class="flex items-center"><span aria-hidden="true" class="text-[1.75rem] mr-2 text-[var(--color-accent-teal)]">🍋</span>Lime Juice (Naranga Vellam - with a pinch of salt)</li>
+                <p class="content-text mb-2">Opt for these Keralan thirst-quenchers:</p>
+                <ul class="list-none space-y-2 content-text">
+                    <li class="flex items-center"><span class="icon-style">💧</span>Plain Water (your primary source)</li>
+                    <li class="flex items-center"><span class="icon-style">🥥</span>Tender Coconut Water (Karikku - natural electrolytes)</li>
+                    <li class="flex items-center"><span class="icon-style">🍋</span>Lime Juice (Naranga Vellam - with a pinch of salt)</li>
                 </ul>
             </div>
 
-            <div class="bg-[var(--color-text-light)] rounded-lg shadow-lg p-6">
-                <h2 class="section-title-custom font-bold text-[var(--color-primary-dark)] mb-4 text-center md:text-3xl">💪 Smart Supplementation</h2>
-                <p class="content-text-custom leading-relaxed mb-4">While whole foods are primary, these non-dairy supplements can support your ambitious goals if needed. Always prioritize a food-first approach.</p>
-                <ul class="list-none space-y-3 content-text-custom leading-relaxed">
-                    <li class="p-3 rounded bg-gray-50 border-l-4 border-[var(--color-accent-teal)]">
-                        <strong class="text-[var(--color-accent-teal)]">Creatine Monohydrate (3-5g/day):</strong><br> Enhances strength, power, and muscle mass.
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="section-title">💪 Smart Supplementation</h2>
+                <p class="content-text mb-4">While whole foods are primary, these non-dairy supplements can support your ambitious goals if needed. Always prioritize a food-first approach.</p>
+                <ul class="list-none space-y-3 content-text">
+                    <li class="p-3 rounded bg-gray-50 border-l-4 border-[#1B998B]">
+                        <strong class="text-[#1B998B]">Creatine Monohydrate (3-5g/day):</strong><br> Enhances strength, power, and muscle mass.
                     </li>
-                    <li class="p-3 rounded bg-gray-50 border-l-4 border-[var(--color-accent-teal)]">
-                        <strong class="text-[var(--color-accent-teal)]">Plant-Based Protein Powder:</strong><br> Convenient for meeting daily protein targets, especially post-workout.
+                    <li class="p-3 rounded bg-gray-50 border-l-4 border-[#1B998B]">
+                        <strong class="text-[#1B998B]">Plant-Based Protein Powder:</strong><br> Convenient for meeting daily protein targets, especially post-workout.
                     </li>
-                    <li class="p-3 rounded bg-gray-50 border-l-4 border-[var(--color-accent-teal)]">
-                        <strong class="text-[var(--color-accent-teal)]">Vitamin D & Algal Omega-3s:</strong><br> Consider based on dietary intake and potential deficiency (Vitamin D testing advised).
+                    <li class="p-3 rounded bg-gray-50 border-l-4 border-[#1B998B]">
+                        <strong class="text-[#1B998B]">Vitamin D & Algal Omega-3s:</strong><br> Consider based on dietary intake and potential deficiency (Vitamin D testing advised).
                     </li>
                 </ul>
             </div>
         </section>
 
-        <section id="monitoring-progress" class="mb-12 bg-[var(--color-text-light)] rounded-lg shadow-lg p-6 md:p-8">
-            <h2 class="section-title-custom font-bold text-[var(--color-primary-dark)] mb-6 text-center md:text-3xl">📊 Tracking Your Success</h2>
-            <p class="content-text-custom leading-relaxed text-center mb-6">Monitor your progress to stay on track and make informed adjustments. Consistency is your greatest ally!</p>
+        <section id="monitoring-progress" class="mb-12 bg-white rounded-lg shadow-lg p-6 md:p-8">
+            <h2 class="section-title">📊 Tracking Your Success</h2>
+            <p class="content-text text-center mb-6">Monitor your progress to stay on track and make informed adjustments. Consistency is your greatest ally!</p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-                <div class="bg-[var(--color-primary-medium)] text-[var(--color-text-light)] rounded-lg p-6 shadow-md text-center">
-                    <div class="text-4xl font-bold">📈 0.5 - 1 <span class="text-xl align-baseline">kg</span></div>
-                    <div class="text-sm text-gray-100 mt-1">Target Weekly Weight Gain</div>
+                <div class="stat-card bg-[#3E92CC] text-white">
+                    <div class="stat-value text-white">📈 0.5 - 1 <span class="text-xl">kg</span></div>
+                    <div class="stat-label text-gray-100">Target Weekly Weight Gain</div>
                 </div>
                 <div>
-                    <h3 class="text-xl font-semibold text-[var(--color-primary-dark)] mb-3">How to Monitor:</h3>
-                    <ul class="list-none space-y-2 content-text-custom leading-relaxed">
-                        <li class="flex items-center"><span aria-hidden="true" class="text-[1.75rem] mr-2 text-[var(--color-accent-teal)]">⚖️</span>Weigh in weekly (same day, time, conditions).</li>
-                        <li class="flex items-center"><span aria-hidden="true" class="text-[1.75rem] mr-2 text-[var(--color-accent-teal)]">📸</span>Take progress photos every 2-4 weeks.</li>
-                        <li class="flex items-center"><span aria-hidden="true" class="text-[1.75rem] mr-2 text-[var(--color-accent-teal)]">📏</span>Track body measurements (chest, arms, waist).</li>
-                        <li class="flex items-center"><span aria-hidden="true" class="text-[1.75rem] mr-2 text-[var(--color-accent-teal)]">🤸</span>Note strength progression in calisthenics.</li>
+                    <h3 class="sub-title">How to Monitor:</h3>
+                    <ul class="list-none space-y-2 content-text">
+                        <li class="flex items-center"><span class="icon-style">⚖️</span>Weigh in weekly (same day, time, conditions).</li>
+                        <li class="flex items-center"><span class="icon-style">📸</span>Take progress photos every 2-4 weeks.</li>
+                        <li class="flex items-center"><span class="icon-style">📏</span>Track body measurements (chest, arms, waist).</li>
+                        <li class="flex items-center"><span class="icon-style">🤸</span>Note strength progression in calisthenics.</li>
                     </ul>
-                    <p class="content-text-custom leading-relaxed mt-3">Adjust caloric intake by 250-500 kcal if gain is too slow or too fast after 2-4 weeks of consistent effort.</p>
+                    <p class="content-text mt-3">Adjust caloric intake by 250-500 kcal if gain is too slow or too fast after 2-4 weeks of consistent effort.</p>
                 </div>
             </div>
         </section>
 
-        <section id="long-term" class="text-center py-10 bg-gradient-to-r from-[var(--color-primary-dark)] to-[var(--color-primary-medium)] text-[var(--color-text-light)] rounded-lg shadow-xl">
+        <section id="long-term" class="text-center py-10 bg-gradient-to-r from-[#0A2463] to-[#3E92CC] text-white rounded-lg shadow-xl">
             <h2 class="text-3xl font-bold mb-4">The Path to 65kg & Beyond!</h2>
             <p class="text-lg max-w-xl mx-auto mb-6">Consistency in your Keralan diet, calisthenics, and recovery is key. Listen to your body, celebrate your progress, and build sustainable healthy habits for long-term success. You've got this!</p>
-            <div class="text-5xl font-bold text-[var(--color-accent-yellow)]">🎯 65 KG</div>
+            <div class="text-5xl font-bold text-[#FFF275]">🎯 65 KG</div>
         </section>
     </main>
 
     <footer class="text-center py-6 text-sm text-gray-600 bg-gray-100 mt-12">
         <p>This infographic is based on the "Personalized Keralan Non-Dairy Meal Plan for Healthy Weight Gain" report. Always consult with a healthcare professional or registered dietitian for personalized advice.</p>
-        <p>Color Palette (CSS Variables): --color-primary-dark, --color-primary-medium, --color-accent-yellow, --color-accent-teal, --color-accent-pink.</p>
+        <p>Color Palette: Vibrant & Trustworthy (#0A2463, #3E92CC, #FFF275, #1B998B, #D81E5B - used primary blues, yellow, teal).</p>
         <p>No SVG or Mermaid JS used. All charts rendered via Chart.js Canvas.</p>
     </footer>
 
     <script>
-        // Utility function to process labels for Chart.js, wrapping long text.
         function processLabel(label, maxLength = 16) {
             if (label.length <= maxLength) {
                 return label;
@@ -268,65 +301,59 @@
             return lines;
         }
 
-        // Common callback for Chart.js tooltip titles to handle array labels.
         const commonTooltipTitleCallback = function(tooltipItems) {
             const item = tooltipItems[0];
             let label = item.chart.data.labels[item.dataIndex];
-            // If label is an array (from processLabel), join it back for the tooltip title.
             if (Array.isArray(label)) {
-                return label.join(' ');
+              return label.join(' ');
             } else {
-                return label;
+              return label;
             }
         };
-        
-        // Chart.js data for Macronutrient Distribution
+
         const macroData = {
             labels: [processLabel('Protein 17.5%'), processLabel('Carbohydrates 57.2%'), processLabel('Fats 25.3%')],
             datasets: [{
                 label: 'Macronutrient Distribution',
                 data: [17.5, 57.2, 25.3],
                 backgroundColor: [
-                    'var(--color-primary-medium)', // Using CSS Variable
-                    'var(--color-accent-yellow)',  // Using CSS Variable
-                    'var(--color-accent-teal)'     // Using CSS Variable
+                    '#3E92CC', 
+                    '#FFF275', 
+                    '#1B998B'  
                 ],
-                borderColor: [ // Border color for chart segments
-                    'var(--color-text-light)',    // Using CSS Variable
-                    'var(--color-text-light)',
-                    'var(--color-text-light)'
+                borderColor: [
+                    '#FFFFFF',
+                    '#FFFFFF',
+                    '#FFFFFF'
                 ],
                 borderWidth: 2,
                 hoverOffset: 4
             }]
         };
 
-        // Chart.js configuration for the Doughnut chart
         const macroConfig = {
             type: 'doughnut',
             data: macroData,
             options: {
                 responsive: true,
-                maintainAspectRatio: false, // Important for fitting into chart-container
+                maintainAspectRatio: false,
                 plugins: {
                     legend: {
-                        position: 'bottom', // Position of the legend
+                        position: 'bottom',
                         labels: {
                             font: {
                                 size: 12,
                                 family: 'Inter'
                             },
-                            color: 'var(--color-primary-dark)', // Legend text color
-                            boxWidth: 15,
-                            padding: 15,
-                            // Custom label generator to correctly display multi-line labels
-                            generateLabels: function(chart) {
+                            color: '#0A2463',
+                             boxWidth: 15,
+                             padding: 15,
+                             generateLabels: function(chart) {
                                 const data = chart.data;
                                 if (data.labels.length && data.datasets.length) {
                                     return data.labels.map(function(label, i) {
                                         const meta = chart.getDatasetMeta(0);
                                         const style = meta.controller.getStyle(i);
-                                        // Join array labels for display
                                         let displayLabel = Array.isArray(label) ? label.join(' ') : label;
                                         
                                         return {
@@ -344,13 +371,13 @@
                         }
                     },
                     tooltip: {
-                        backgroundColor: 'var(--color-primary-dark)', // Tooltip background
+                        backgroundColor: '#0A2463',
                         titleFont: { size: 14, family: 'Inter', weight: 'bold' },
                         bodyFont: { size: 12, family: 'Inter' },
                         padding: 10,
                         callbacks: {
-                            title: commonTooltipTitleCallback, // Use common title callback
-                            label: function(context) { // Custom label for tooltip content
+                            title: commonTooltipTitleCallback,
+                            label: function(context) {
                                 let label = context.dataset.label || '';
                                 if (label) {
                                     label += ': ';
@@ -363,40 +390,14 @@
                         }
                     }
                 },
-                cutout: '60%', // Percentage of the chart cut out to make a doughnut
+                cutout: '60%',
             }
         };
 
-        // Initialize the chart when the window loads
         window.onload = function() {
             const macroCtx = document.getElementById('macroNutrientChart');
             if (macroCtx) {
-                // Need to get the actual color values from CSS variables for Chart.js
-                const computedStyle = getComputedStyle(document.documentElement);
-                const chartColors = {
-                    primaryMedium: computedStyle.getPropertyValue('--color-primary-medium').trim(),
-                    accentYellow: computedStyle.getPropertyValue('--color-accent-yellow').trim(),
-                    accentTeal: computedStyle.getPropertyValue('--color-accent-teal').trim(),
-                    textLight: computedStyle.getPropertyValue('--color-text-light').trim(),
-                    primaryDark: computedStyle.getPropertyValue('--color-primary-dark').trim()
-                };
-
-                macroData.datasets[0].backgroundColor = [
-                    chartColors.primaryMedium,
-                    chartColors.accentYellow,
-                    chartColors.accentTeal
-                ];
-                macroData.datasets[0].borderColor = [
-                    chartColors.textLight,
-                    chartColors.textLight,
-                    chartColors.textLight
-                ];
-                macroConfig.options.plugins.legend.labels.color = chartColors.primaryDark;
-                macroConfig.options.plugins.tooltip.backgroundColor = chartColors.primaryDark;
-                
                 new Chart(macroCtx, macroConfig);
-            } else {
-                console.error("macroNutrientChart canvas element not found.");
             }
         };
     </script>
