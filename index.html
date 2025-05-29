@@ -3,19 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personalized Keralan Weight Gain Plan</title>
+    <title>Personalized Keralan Weight Gain Meal Plan</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Visualization & Content Choices:
+        - Report Info: BMR, TDEE, Caloric Surplus, Target Intake. Goal: Inform. Viz/Method: Dynamic stat cards (HTML/Tailwind). Interaction: None. Justification: Clear, immediate display of key numbers. Library: HTML/CSS.
+        - Report Info: Macronutrient % (Protein, Carbs, Fat). Goal: Compare/Inform. Viz/Method: Chart.js Donut Chart. Interaction: Hover for tooltips. Justification: Visual representation of proportions. Library: Chart.js (Canvas).
+        - Report Info: Food Recommendations (Protein, Carbs, Fats, Fruits/Veggies). Goal: Inform/Organize. Viz/Method: Categorized lists in cards (HTML/Tailwind). Interaction: None. Justification: Clear, structured lists. Library: HTML/CSS.
+        - Report Info: 7-Day Meal Plan. Goal: Organize/Inform. Viz/Method: Interactive Tabs for each day, displaying meals in cards (HTML/Tailwind/JS). Interaction: Click tabs to switch days. Justification: Prevents overwhelming a single page, allows focused viewing. Library: HTML/CSS/JS.
+        - Report Info: Meal Prep, Snacking, Hydration, Supplements, Monitoring, Sustainability Tips. Goal: Inform/Guide. Viz/Method: Structured text sections with lists/cards (HTML/Tailwind). Interaction: None. Justification: Clear presentation of actionable advice. Library: HTML/CSS.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. All charts are Canvas-based (Chart.js). Icons are Unicode characters.
+    -->
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #F0F8FF; 
+            background-color: #FAF7F5; /* Warm Neutral Background */
+            color: #4A4440; /* Primary Text */
         }
         .chart-container {
             position: relative;
             width: 100%;
-            max-width: 450px;
+            max-width: 400px; /* Adjusted for better fit */
             margin-left: auto;
             margin-right: auto;
             height: 300px;
@@ -28,262 +37,451 @@
             }
         }
         .stat-card {
-            background-color: #ffffff;
-            border-radius: 0.5rem;
+            background-color: #FFFFFF;
+            border-radius: 0.75rem; /* Slightly more rounded */
             padding: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 4px 12px -1px rgba(0, 0, 0, 0.07), 0 2px 8px -1px rgba(0, 0, 0, 0.04);
             text-align: center;
+            border: 1px solid #DCD3CC; /* Subtle border */
         }
         .stat-value {
-            font-size: 2.25rem;
+            font-size: 2.25rem; /* 36px */
             font-weight: 700;
-            color: #0A2463;
+            color: #C87E60; /* Accent Color */
         }
         .stat-label {
-            font-size: 0.875rem;
-            color: #3E92CC;
-            margin-top: 0.25rem;
-        }
-        .icon-style {
-            font-size: 1.75rem;
-            margin-right: 0.5rem;
-            color: #1B998B;
+            font-size: 0.875rem; /* 14px */
+            color: #A89F98; /* Secondary Text */
+            margin-top: 0.5rem;
         }
         .section-title {
-            font-size: 1.75rem;
+            font-size: 1.75rem; /* 28px */
             font-weight: 700;
-            color: #0A2463;
-            margin-bottom: 1rem;
+            color: #4A4440;
+            margin-bottom: 1.5rem;
             text-align: center;
         }
         .sub-title {
-            font-size: 1.25rem;
+            font-size: 1.25rem; /* 20px */
             font-weight: 600;
-            color: #0A2463;
-            margin-bottom: 0.75rem;
-        }
-        .content-text {
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: #334155; 
-        }
-        .kerala-food-card {
-            background-color: #ffffff;
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            border-left: 5px solid #1B998B;
-        }
-        .meal-card {
-            background-color: #ffffff;
-            border-radius: 0.5rem;
-            padding: 1rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            color: #4A4440;
             margin-bottom: 1rem;
         }
-        .meal-time {
-            font-weight: 600;
-            color: #D81E5B;
+        .content-text {
+            font-size: 1rem; /* 16px */
+            line-height: 1.7;
+            color: #5f5751; /* Slightly lighter primary text */
+        }
+        .accent-bg { background-color: #C87E60; }
+        .accent-text { color: #C87E60; }
+        .nav-button {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            background-color: #FFFFFF;
+            color: #C87E60;
+            border: 1px solid #DCD3CC;
+        }
+        .nav-button.active {
+            background-color: #C87E60;
+            color: #FFFFFF;
+            border-color: #C87E60;
+        }
+        .nav-button:hover:not(.active) {
+            background-color: #FDFBF9;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px -1px rgba(0, 0, 0, 0.07), 0 2px 8px -1px rgba(0, 0, 0, 0.04);
+            border: 1px solid #DCD3CC;
+        }
+        .list-item-icon {
+            color: #C87E60;
+            margin-right: 0.5rem;
+            flex-shrink: 0;
         }
     </style>
 </head>
-<body class="text-gray-800">
-    <header class="bg-gradient-to-r from-[#0A2463] to-[#3E92CC] text-white py-12 px-4 text-center">
-        <h1 class="text-4xl font-bold mb-2">Your Path to 65kg: A Keralan Weight Gain Journey</h1>
-        <p class="text-lg max-w-2xl mx-auto">A personalized non-dairy meal plan for healthy weight gain and enhanced calisthenics performance in Palakkad, Kerala.</p>
+<body class="antialiased">
+
+    <header class="bg-white py-8 shadow-sm border-b border-DCD3CC">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl font-bold text-C87E60 mb-3">Personalized Keralan Weight Gain Plan</h1>
+            <p class="text-lg content-text max-w-3xl mx-auto">Your interactive guide to achieving 65kg with non-dairy, easy-to-cook Keralan meals and calisthenics.</p>
+        </div>
     </header>
 
-    <main class="container mx-auto p-4 md:p-8">
+    <main class="container mx-auto p-4 md:p-8 space-y-12">
 
-        <section id="introduction" class="mb-12 bg-white rounded-lg shadow-lg p-6 md:p-8">
-            <h2 class="section-title">Meet Your Goals!</h2>
-            <p class="content-text text-center mb-6">This plan is tailored for a 27-year-old individual, 173cm tall, starting at 55kg, aiming to reach 65kg in 2 months through healthier eating and regular calisthenics.</p>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                <div class="stat-card bg-[#FFF275] text-[#0A2463]">
-                    <div class="stat-value">🎯 10<span class="text-xl">kg</span></div>
-                    <div class="stat-label">Target Gain</div>
-                </div>
-                <div class="stat-card bg-[#FFF275] text-[#0A2463]">
-                    <div class="stat-value">⏱️ 2<span class="text-xl"></span></div>
-                    <div class="stat-label">Months</div>
+        <section id="introduction" class="card">
+            <h2 class="section-title">Welcome to Your Weight Gain Journey!</h2>
+            <p class="content-text mb-4">This plan is tailored for a 27-year-old individual (173cm, 55kg) aiming for 65kg in 2 months. The goal of 1.25 kg/week is ambitious; a healthy, sustainable gain of 0.5-1 kg/week is targeted, focusing on lean mass with nutrient-dense Keralan foods. Some fat gain is expected with this accelerated timeline.</p>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+                <div class="stat-card">
+                    <div class="stat-value">🎯 10kg</div>
+                    <div class="stat-label">Total Gain Target</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">👤 55<span class="text-xl">kg</span></div>
+                    <div class="stat-value">🗓️ 2</div>
+                    <div class="stat-label">Months Timeline</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">⚖️ 55kg</div>
                     <div class="stat-label">Starting Weight</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">🏁 65<span class="text-xl">kg</span></div>
+                    <div class="stat-value">🏁 65kg</div>
                     <div class="stat-label">Goal Weight</div>
                 </div>
             </div>
         </section>
 
-        <section id="nutritional-blueprint" class="mb-12 bg-white rounded-lg shadow-lg p-6 md:p-8">
-            <h2 class="section-title">Your Nutritional Blueprint</h2>
-            <p class="content-text text-center mb-6">To fuel your growth and calisthenics, we've calculated your specific energy needs. Your body needs a consistent caloric surplus to build muscle effectively.</p>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <section id="nutritional-assessment" class="card">
+            <h2 class="section-title">Understanding Your Energy Needs</h2>
+            <p class="content-text mb-6 text-center">Based on your profile (27 y/o male, 55kg, 173cm) and a moderately active calisthenics routine, here's your estimated daily energy expenditure.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div class="stat-card">
                     <div class="stat-value">🔥 1501</div>
-                    <div class="stat-label">Basal Metabolic Rate (BMR kcal)</div>
+                    <div class="stat-label">Basal Metabolic Rate (BMR kcal/day)</div>
+                    <p class="text-xs content-text mt-2">Energy for basic functions at rest.</p>
                 </div>
                 <div class="stat-card">
                     <div class="stat-value">🏃 2330</div>
-                    <div class="stat-label">Total Daily Energy Expenditure (TDEE kcal)</div>
-                </div>
-                <div class="stat-card bg-[#3E92CC] text-white">
-                    <div class="stat-value text-white">🎯 ~3200</div>
-                    <div class="stat-label text-gray-100">Target Daily Caloric Intake (kcal)</div>
-                     <p class="text-xs mt-1 text-gray-200">(Approx. +870 kcal surplus)</p>
+                    <div class="stat-label">Total Daily Energy Expenditure (TDEE kcal/day)</div>
+                    <p class="text-xs content-text mt-2">BMR + Activity (calisthenics). This is your maintenance level.</p>
                 </div>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-                <div>
-                    <h3 class="sub-title text-center md:text-left">Macronutrient Power Balance</h3>
-                    <p class="content-text mb-4">Your ~3200 daily calories are strategically divided to optimize muscle growth, energy, and overall health. This balance supports your calisthenics routine and recovery.</p>
-                    <ul class="list-disc list-inside content-text space-y-1">
-                        <li><strong>Protein (17.5%):</strong> ~140g for muscle repair & growth.</li>
-                        <li><strong>Carbohydrates (57.2%):</strong> ~457.5g for sustained energy & glycogen.</li>
-                        <li><strong>Fats (25.3%):</strong> ~90g for calorie density & hormone health.</li>
-                    </ul>
-                </div>
+            <p class="content-text">It's important to note that "regular calisthenics" can vary. If your routine is highly rigorous, your TDEE might be closer to 2590 kcal/day. We'll start with 2330 kcal and adjust based on progress.</p>
+        </section>
+
+        <section id="caloric-strategy" class="card">
+            <h2 class="section-title">Strategic Caloric Intake</h2>
+            <p class="content-text mb-4">To gain 1kg, an excess of ~7000 kcal is needed. For a 10kg goal in 2 months (1.25kg/week), a theoretical daily surplus of 1250 kcal is required. However, this is very high and may lead to excessive fat gain.</p>
+            <p class="content-text mb-6">This plan targets a more manageable initial daily surplus of **+750 to +1000 kcal** for a weekly gain of ~0.75-1kg.</p>
+            <div class="stat-card max-w-md mx-auto bg-amber-50 border-amber-200">
+                <div class="stat-value text-amber-600">🎯 ~3200</div>
+                <div class="stat-label text-amber-500">Initial Target Daily Caloric Intake (kcal/day)</div>
+                <p class="text-xs content-text mt-2">(TDEE 2330 kcal + ~870 kcal surplus)</p>
+            </div>
+            <p class="content-text mt-6">This balanced approach aims to support your timeline while prioritizing healthy weight gain. Consistent monitoring and adjustments (increasing calories by 250-500 if gain is slow after 2-3 weeks) are crucial. Some fat gain is inevitable with this rapid goal.</p>
+        </section>
+
+        <section id="macronutrients" class="card">
+            <h2 class="section-title">Macronutrient Blueprint (~3200 kcal)</h2>
+            <p class="content-text mb-6 text-center">The right balance of protein, carbohydrates, and fats is key for muscle growth and energy. Here's your target breakdown:</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div class="chart-container">
                     <canvas id="macroNutrientChart"></canvas>
                 </div>
+                <div class="space-y-4">
+                    <div>
+                        <h3 class="sub-title accent-text">💪 Protein: ~140g (17.5%)</h3>
+                        <p class="content-text">Essential for muscle repair and growth (approx. 2.15g per kg of target body weight). Aim for ~30g per meal. Sources: Fish, chicken, eggs, lentils, legumes, soya, nuts.</p>
+                    </div>
+                    <div>
+                        <h3 class="sub-title accent-text">⚡ Carbohydrates: ~457.5g (57.2%)</h3>
+                        <p class="content-text">Primary fuel for workouts and glycogen replenishment. Focus on complex carbs. Sources: Matta rice, puttu, appam, kappa, sweet potatoes, fruits.</p>
+                    </div>
+                    <div>
+                        <h3 class="sub-title accent-text">🥑 Fats: ~90g (25.3%)</h3>
+                        <p class="content-text">Calorie-dense for energy surplus and hormone health. Sources: Coconut (oil, milk), nuts, seeds, avocado.</p>
+                    </div>
+                </div>
             </div>
         </section>
-        
-        <section id="keralan-foods" class="mb-12 bg-white rounded-lg shadow-lg p-6 md:p-8">
-            <h2 class="section-title">Fueling Your Gains: Keralan Style!</h2>
-            <p class="content-text text-center mb-8">Embrace the rich, nutritious, and non-dairy foods of Kerala. This plan focuses on easily available and simple-to-cook options from Palakkad to help you meet your goals deliciously.</p>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="kerala-food-card">
-                    <h3 class="sub-title flex items-center"><span class="icon-style">🐟</span>Protein Powerhouses</h3>
-                    <p class="content-text mb-2">Essential for muscle repair and growth. Enjoy these local favorites:</p>
-                    <ul class="list-disc list-inside content-text space-y-1">
+
+        <section id="food-recommendations" class="card">
+            <h2 class="section-title">Keralan-Inspired Food Guide (Non-Dairy)</h2>
+            <p class="content-text mb-8 text-center">Leverage Palakkad's rich, non-dairy culinary heritage. These foods are nutritious, accessible, and align with your goals.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="p-6 rounded-lg border border-DCD3CC bg-lime-50">
+                    <h3 class="sub-title text-lime-700 flex items-center"><span class="text-2xl mr-2">🐟</span>Protein Powerhouses</h3>
+                    <ul class="list-disc list-inside content-text space-y-1 text-lime-600">
                         <li>Fish (Neymeen, Mathi, Ayala)</li>
                         <li>Chicken (Nadan Kozhi Curry)</li>
                         <li>Eggs (Mutta Roast)</li>
-                        <li>Lentils (Kadala, Cherupayar)</li>
-                        <li>Soya Chunks / Tofu</li>
+                        <li>Lentils & Legumes (Kadala, Cherupayar)</li>
+                        <li>Soya Chunks, Tofu</li>
+                        <li>Nuts & Seeds</li>
                     </ul>
                 </div>
-                <div class="kerala-food-card">
-                    <h3 class="sub-title flex items-center"><span class="icon-style">🍚</span>Energy-Boosting Carbs</h3>
-                    <p class="content-text mb-2">Your primary fuel for intense workouts and daily activities:</p>
-                    <ul class="list-disc list-inside content-text space-y-1">
-                        <li>Matta Rice / Brown Rice</li>
-                        <li>Puttu, Appam, Idiyappam</li>
-                        <li>Kappa (Tapioca)</li>
-                        <li>Nenthra Pazham (Plantain)</li>
-                        <li>Sweet Potatoes, Yams</li>
+                <div class="p-6 rounded-lg border border-DCD3CC bg-sky-50">
+                    <h3 class="sub-title text-sky-700 flex items-center"><span class="text-2xl mr-2">🍚</span>Energy-Boosting Carbs</h3>
+                    <ul class="list-disc list-inside content-text space-y-1 text-sky-600">
+                        <li>Matta Rice, Brown Rice</li>
+                        <li>Puttu, Appam, Idiyappam, Dosa</li>
+                        <li>Tubers (Kappa, Chena, Madhura Kizhangu)</li>
+                        <li>Plantain (Nenthra Pazham)</li>
+                        <li>Oats, Poha</li>
                     </ul>
                 </div>
-                <div class="kerala-food-card">
-                    <h3 class="sub-title flex items-center"><span class="icon-style">🥥</span>Calorie-Dense Healthy Fats</h3>
-                    <p class="content-text mb-2">Crucial for calorie density, hormone production, and vitamin absorption:</p>
-                    <ul class="list-disc list-inside content-text space-y-1">
+                <div class="p-6 rounded-lg border border-DCD3CC bg-yellow-50">
+                    <h3 class="sub-title text-yellow-700 flex items-center"><span class="text-2xl mr-2">🥥</span>Healthy Fats & Oils</h3>
+                    <ul class="list-disc list-inside content-text space-y-1 text-yellow-600">
                         <li>Coconut (Oil, Milk, Grated)</li>
-                        <li>Nuts (Almonds, Cashews, Peanuts)</li>
+                        <li>Nuts (Almonds, Cashews, Peanuts) & Nut Butters</li>
                         <li>Seeds (Flax, Chia, Sesame)</li>
-                        <li>Avocado (if available)</li>
+                        <li>Avocado</li>
+                        <li>Olive Oil (for variety)</li>
                     </ul>
                 </div>
             </div>
+            <p class="content-text mt-6"><strong class="accent-text">Calcium Note:</strong> Since dairy is excluded, ensure calcium from non-dairy sources like leafy greens (spinach, moringa), small fish (sardines with bones), sesame seeds, almonds, and ragi.</p>
         </section>
 
-        <section id="meal-framework" class="mb-12 bg-white rounded-lg shadow-lg p-6 md:p-8">
-            <h2 class="section-title">Your Daily Meal Framework (Sample)</h2>
-            <p class="content-text text-center mb-8">Here’s a glimpse of how a typical day of eating might look to hit your ~3200 calorie target. Remember, consistency is key, and portion sizes can be adjusted based on your progress.</p>
-            <div class="space-y-4">
-                <div class="meal-card border-l-4 border-[#3E92CC]">
-                    <p><strong class="meal-time">🌅 Breakfast (~750 kcal):</strong> Puttu (2 pcs) with Kadala Curry (1.5 cups) + 1 Boiled Egg.</p>
-                </div>
-                <div class="meal-card border-l-4 border-[#1B998B]">
-                    <p><strong class="meal-time"> snacking (~350 kcal):</strong> Nenthra Pazham (1 large) + Mixed Nuts (30g).</p>
-                </div>
-                <div class="meal-card border-l-4 border-[#3E92CC]">
-                    <p><strong class="meal-time">☀️ Lunch (~950 kcal):</strong> Matta Rice (2 cups) with Fish Molee (150g fish) + Cabbage Thoran (1 cup).</p>
-                </div>
-                <div class="meal-card border-l-4 border-[#1B998B]">
-                     <p><strong class="meal-time"> snacking (~250 kcal):</strong> Pazham Pori (2 pcs, pan-fried).</p>
-                </div>
-                <div class="meal-card border-l-4 border-[#3E92CC]">
-                    <p><strong class="meal-time">🌙 Dinner (~750 kcal):</strong> Chapati (4 medium) + Nadan Chicken Curry (150g chicken) + Green Salad.</p>
-                </div>
+        <section id="meal-plan" class="card">
+            <h2 class="section-title">Sample 7-Day Keralan Meal Plan (~3200 kcal/day)</h2>
+            <p class="content-text mb-6 text-center">This framework showcases how to achieve your daily targets with delicious, easy-to-prepare Keralan meals. Adjust portions based on your progress.</p>
+            <div class="mb-6 flex flex-wrap justify-center gap-2" id="day-selector">
             </div>
-             <p class="content-text text-center mt-6">Focus on 3 main meals and 2-3 calorie-dense snacks. Batch cooking and pre-chopping ingredients can simplify preparation.</p>
-        </section>
-
-        <section id="hydration-supplements" class="mb-12 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="bg-white rounded-lg shadow-lg p-6">
-                <h2 class="section-title">💧 Hydration is Key!</h2>
-                <p class="content-text mb-4">Especially in Palakkad's climate and with your calisthenics routine, staying hydrated is crucial for performance, recovery, and overall health.</p>
-                <div class="stat-card bg-[#FFF275] text-[#0A2463] mb-4">
-                    <div class="stat-value">3.5 - 4.5 <span class="text-xl">Liters</span></div>
-                    <div class="stat-label">Target Daily Fluid Intake</div>
-                </div>
-                <p class="content-text mb-2">Opt for these Keralan thirst-quenchers:</p>
-                <ul class="list-none space-y-2 content-text">
-                    <li class="flex items-center"><span class="icon-style">💧</span>Plain Water (your primary source)</li>
-                    <li class="flex items-center"><span class="icon-style">🥥</span>Tender Coconut Water (Karikku - natural electrolytes)</li>
-                    <li class="flex items-center"><span class="icon-style">🍋</span>Lime Juice (Naranga Vellam - with a pinch of salt)</li>
-                </ul>
-            </div>
-
-            <div class="bg-white rounded-lg shadow-lg p-6">
-                <h2 class="section-title">💪 Smart Supplementation</h2>
-                <p class="content-text mb-4">While whole foods are primary, these non-dairy supplements can support your ambitious goals if needed. Always prioritize a food-first approach.</p>
-                <ul class="list-none space-y-3 content-text">
-                    <li class="p-3 rounded bg-gray-50 border-l-4 border-[#1B998B]">
-                        <strong class="text-[#1B998B]">Creatine Monohydrate (3-5g/day):</strong><br> Enhances strength, power, and muscle mass.
-                    </li>
-                    <li class="p-3 rounded bg-gray-50 border-l-4 border-[#1B998B]">
-                        <strong class="text-[#1B998B]">Plant-Based Protein Powder:</strong><br> Convenient for meeting daily protein targets, especially post-workout.
-                    </li>
-                    <li class="p-3 rounded bg-gray-50 border-l-4 border-[#1B998B]">
-                        <strong class="text-[#1B998B]">Vitamin D & Algal Omega-3s:</strong><br> Consider based on dietary intake and potential deficiency (Vitamin D testing advised).
-                    </li>
-                </ul>
+            <div id="meal-plan-content" class="space-y-6">
             </div>
         </section>
 
-        <section id="monitoring-progress" class="mb-12 bg-white rounded-lg shadow-lg p-6 md:p-8">
-            <h2 class="section-title">📊 Tracking Your Success</h2>
-            <p class="content-text text-center mb-6">Monitor your progress to stay on track and make informed adjustments. Consistency is your greatest ally!</p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-                <div class="stat-card bg-[#3E92CC] text-white">
-                    <div class="stat-value text-white">📈 0.5 - 1 <span class="text-xl">kg</span></div>
-                    <div class="stat-label text-gray-100">Target Weekly Weight Gain</div>
+        <section id="meal-prep" class="card">
+            <h2 class="section-title">Practical Meal Prep & Portion Guidance</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="sub-title">🍜 Efficient Cooking Tips</h3>
+                    <ul class="list-disc list-inside content-text space-y-2">
+                        <li><strong>Batch Cook:</strong> Prepare large pots of curries, sambar, or rice for multiple meals.</li>
+                        <li><strong>Pre-Prep Ingredients:</strong> Chop veggies, grate coconut, or make ginger-garlic paste in advance.</li>
+                        <li><strong>One-Pot Meals:</strong> Focus on stews (Olan, Ishtu) and hearty curries.</li>
+                        <li><strong>Use Leftovers:</strong> Plan dinner leftovers for the next day's lunch.</li>
+                        <li><strong>Simplify:</strong> Opt for quicker preparations like Thoran or pan-fried fish/chicken.</li>
+                    </ul>
                 </div>
                 <div>
-                    <h3 class="sub-title">How to Monitor:</h3>
-                    <ul class="list-none space-y-2 content-text">
-                        <li class="flex items-center"><span class="icon-style">⚖️</span>Weigh in weekly (same day, time, conditions).</li>
-                        <li class="flex items-center"><span class="icon-style">📸</span>Take progress photos every 2-4 weeks.</li>
-                        <li class="flex items-center"><span class="icon-style">📏</span>Track body measurements (chest, arms, waist).</li>
-                        <li class="flex items-center"><span class="icon-style">🤸</span>Note strength progression in calisthenics.</li>
+                    <h3 class="sub-title">🥜 Smart Snacking for Calories</h3>
+                    <p class="content-text mb-2">Snacks are vital for hitting your calorie target. Aim for nutrient and calorie density.</p>
+                    <ul class="list-disc list-inside content-text space-y-1">
+                        <li>Nuts & Seeds (30-40g)</li>
+                        <li>Dried Fruits (raisins, dates)</li>
+                        <li>Nenthra Pazham (raw, steamed, or boiled)</li>
+                        <li>Pazham Pori (pan-fried/baked occasionally)</li>
+                        <li>Peanut Sundal</li>
+                        <li>Fresh Coconut Slices, Avocado</li>
+                        <li>Non-Dairy Smoothies (fruits, coconut water/milk, nuts, seeds, plant protein powder)</li>
                     </ul>
-                    <p class="content-text mt-3">Adjust caloric intake by 250-500 kcal if gain is too slow or too fast after 2-4 weeks of consistent effort.</p>
+                </div>
+            </div>
+             <h3 class="sub-title mt-8">🖐️ Visual Portion Guides (Estimates)</h3>
+            <ul class="list-disc list-inside content-text space-y-1">
+                <li><strong>Fist:</strong> ~1 cup (cooked rice, dal, chopped veggies)</li>
+                <li><strong>Palm (no fingers):</strong> ~85-115g cooked meat/fish</li>
+                <li><strong>Cupped Hand:</strong> ~1/2 cup nuts/dried fruit</li>
+                <li><strong>Thumb:</strong> ~1 Tbsp oil/nut butter</li>
+            </ul>
+            <p class="content-text mt-2">Consistency with your usual bowls and spoons is key. Adjust based on weight gain progress.</p>
+        </section>
+
+        <section id="hydration" class="card">
+            <h2 class="section-title">Optimal Hydration for Palakkad & Workouts</h2>
+            <p class="content-text mb-4">Hydration is crucial for performance, recovery, and muscle gain, especially in Palakkad's humid climate.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="stat-card">
+                    <div class="stat-value">💧 3.5-4.5</div>
+                    <div class="stat-label">Target Daily Fluid Liters</div>
+                </div>
+                <div>
+                    <h3 class="sub-title">Natural Keralan Hydrators:</h3>
+                    <ul class="space-y-2 content-text">
+                        <li class="flex items-center"><span class="list-item-icon">💧</span>Water (primary source)</li>
+                        <li class="flex items-center"><span class="list-item-icon">🥥</span>Tender Coconut Water (Karikku - natural electrolytes)</li>
+                        <li class="flex items-center"><span class="list-item-icon">🍋</span>Lime Juice (Naranga Vellam - with a pinch of salt)</li>
+                        <li class="flex items-center"><span class="list-item-icon">🍉</span>Fresh Fruit Juices (unsweetened, in moderation)</li>
+                    </ul>
+                    <p class="content-text mt-2">Drink 500ml 1-2 hours before exercise, 150ml every 10-15 mins during, and at least 500ml after. Aim for pale yellow urine.</p>
                 </div>
             </div>
         </section>
 
-        <section id="long-term" class="text-center py-10 bg-gradient-to-r from-[#0A2463] to-[#3E92CC] text-white rounded-lg shadow-xl">
-            <h2 class="text-3xl font-bold mb-4">The Path to 65kg & Beyond!</h2>
-            <p class="text-lg max-w-xl mx-auto mb-6">Consistency in your Keralan diet, calisthenics, and recovery is key. Listen to your body, celebrate your progress, and build sustainable healthy habits for long-term success. You've got this!</p>
-            <div class="text-5xl font-bold text-[#FFF275]">🎯 65 KG</div>
+        <section id="supplements" class="card">
+            <h2 class="section-title">Targeted Supplementation (Non-Dairy)</h2>
+            <p class="content-text mb-6 text-center">A "food first" approach is vital. Supplements can fill gaps if meeting targets is difficult. Consult a professional before starting.</p>
+            <div class="space-y-4">
+                <details class="p-4 rounded-lg border border-DCD3CC bg-gray-50">
+                    <summary class="font-semibold accent-text cursor-pointer">Creatine Monohydrate (3-5g/day)</summary>
+                    <p class="content-text mt-2">Highly effective for strength, power, and muscle mass. Optional loading: 20g/day for 5-7 days. Mix with water/juice. Stay hydrated.</p>
+                </details>
+                <details class="p-4 rounded-lg border border-DCD3CC bg-gray-50">
+                    <summary class="font-semibold accent-text cursor-pointer">Plant-Based Protein/Mass Gainers</summary>
+                    <p class="content-text mt-2">Consider if struggling to meet protein (~140g) or calorie (~3200kcal) targets via food. Protein powders (pea, soy, rice blends) post-workout. Mass gainers for higher calorie needs; check sugar content.</p>
+                </details>
+                <details class="p-4 rounded-lg border border-DCD3CC bg-gray-50">
+                    <summary class="font-semibold accent-text cursor-pointer">Vitamin D & Algal Omega-3s</summary>
+                    <p class="content-text mt-2"><strong>Vitamin D:</strong> Crucial for bone/muscle health. Get levels tested; supplement if deficient.
+                    <br><strong>Algal Omega-3 (EPA/DHA):</strong> If fish intake is low (<2 servings/week). Anti-inflammatory, supports overall health.</p>
+                </details>
+                 <details class="p-4 rounded-lg border border-DCD3CC bg-gray-50">
+                    <summary class="font-semibold accent-text cursor-pointer">Multivitamins (Non-Dairy/Vegan)</summary>
+                    <p class="content-text mt-2">A nutritional safety net if dietary variety is a concern. Choose vegan/non-dairy options.</p>
+                </details>
+            </div>
+            <p class="content-text mt-4"><strong>Priority:</strong> 1. Creatine. 2. Protein/Gainer (if needed). 3. Vitamin D (if deficient). 4. Omega-3s (if low fish intake). 5. Multivitamin (if concerned about diversity).</p>
         </section>
+
+        <section id="monitoring" class="card">
+            <h2 class="section-title">Monitoring Progress & Adapting Your Plan</h2>
+            <p class="content-text mb-6 text-center">Track progress consistently to make informed adjustments. Aim for 0.5-1kg weekly gain.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="sub-title">📈 Tracking Methods</h3>
+                    <ul class="list-disc list-inside content-text space-y-2">
+                        <li><strong>Weekly Weigh-ins:</strong> Same day, time, conditions. Focus on trends.</li>
+                        <li><strong>Progress Photos & Mirror:</strong> Every 2-4 weeks. Look for muscle definition/size changes.</li>
+                        <li><strong>Body Measurements:</strong> Bi-weekly/monthly (chest, arms, waist, thighs).</li>
+                        <li><strong>Clothes Fit:</strong> How clothes feel on shoulders, chest, arms vs. waist.</li>
+                        <li><strong>Strength Progression:</strong> Log calisthenics performance (reps, difficulty).</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="sub-title">🛠️ Adjusting Intake (after 2-4 weeks consistent adherence)</h3>
+                    <ul class="list-disc list-inside content-text space-y-2">
+                        <li><strong>Gaining Too Slowly (<0.5kg/week):</strong> Increase daily calories by +250-500 kcal (more carbs/fats). Review adherence.</li>
+                        <li><strong>Gaining Too Quickly (>1-1.25kg/week or excess fat):</strong> Decrease daily calories by -200-300 kcal. Ensure training is sufficient.</li>
+                        <li><strong>Weight Stalls (plateau for 2-4 weeks):</strong> Increase daily calories by +100-250 kcal. TDEE may have increased.</li>
+                    </ul>
+                     <p class="content-text mt-4"><strong>Troubleshooting:</strong> Check dietary adherence, training progressive overload, sleep (7-9 hrs), and stress levels.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="sustainability" class="card accent-bg text-white">
+            <h2 class="section-title text-white">Sustaining Healthy Habits Long-Term</h2>
+            <p class="content-text text-gray-100 mb-4">Consistency is paramount. Listen to your body's hunger, fullness, and energy cues. The Keralan food choices adopted can form a lifelong healthy eating pattern.</p>
+            <h3 class="sub-title text-gray-50">Transitioning to Maintenance (Post-65kg):</h3>
+            <ul class="list-disc list-inside content-text text-gray-200 space-y-1">
+                <li>Gradually reduce daily calories by 250-500 from bulking intake to find new maintenance.</li>
+                <li>Monitor weight weekly to stabilize.</li>
+                <li>Continue healthy eating and calisthenics.</li>
+            </ul>
+            <p class="content-text text-gray-100 mt-6 font-semibold">Embrace this journey! Celebrate progress in strength and energy. With dedication, your goals are achievable.</p>
+        </section>
+
     </main>
 
-    <footer class="text-center py-6 text-sm text-gray-600 bg-gray-100 mt-12">
-        <p>This infographic is based on the "Personalized Keralan Non-Dairy Meal Plan for Healthy Weight Gain" report. Always consult with a healthcare professional or registered dietitian for personalized advice.</p>
-        <p>Color Palette: Vibrant & Trustworthy (#0A2463, #3E92CC, #FFF275, #1B998B, #D81E5B - used primary blues, yellow, teal).</p>
-        <p>No SVG or Mermaid JS used. All charts rendered via Chart.js Canvas.</p>
+    <footer class="text-center py-8 mt-12 border-t border-DCD3CC">
+        <p class="text-sm content-text">&copy; Personalized Meal Plan SPA. Information for educational purposes only. Consult a healthcare professional.</p>
     </footer>
 
     <script>
-        function processLabel(label, maxLength = 16) {
-            if (label.length <= maxLength) {
+        const mealPlanData = {
+            "Day 1": {
+                breakfast: "Puttu (2 pcs, ~240g) with Kadala Curry (1.5 cups) + 1 Boiled Egg",
+                midMorningSnack: "Nenthra Pazham (1 large) + Mixed Nuts (30g: almonds, cashews)",
+                lunch: "Matta Rice (2 cups cooked) + Fish Molee (150g fish, 1.5 cups curry) + Cabbage Thoran (1 cup)",
+                eveningSnack: "Pazham Pori (2 pcs, pan-fried)",
+                dinner: "Chapati (4 medium) + Nadan Chicken Curry (150g chicken, 1.5 cups curry) + Green Salad",
+                totals: "Approx. 3250 kcal, 145g Protein"
+            },
+            "Day 2": {
+                breakfast: "Appam (3 pcs) with Vegetable Stew (coconut milk, 2 cups) + 2 Scrambled Eggs",
+                midMorningSnack: "Coconut Water (300ml) + Peanut Sundal (1 cup)",
+                lunch: "Matta Rice (2 cups cooked) + Chicken Roast (150g) + Parippu Curry (Lentil curry, 1 cup)",
+                eveningSnack: "Steamed Nenthra Pazham (1 large) with grated coconut (2 Tbsp)",
+                dinner: "Idiyappam (5-6 pcs) with Egg Roast (2 eggs in masala) + Green Beans Mezhukkupuratti (1 cup)",
+                totals: "Approx. 3180 kcal, 138g Protein"
+            },
+            "Day 3": {
+                breakfast: "Dosa (3 medium, less oil) with Sambar (2 cups) + Coconut Chutney (3 Tbsp)",
+                midMorningSnack: "Banana (Robusta, 2 medium) + Almonds (30g)",
+                lunch: "Matta Rice (2 cups cooked) + Sardine (Mathi) Curry (4-5 small fish, 1.5 cups curry) + Spinach Thoran (1 cup)",
+                eveningSnack: "Unniyappam (3 pcs, homemade, less oil)",
+                dinner: "Puttu (2 pcs) with Fish Fry (Seer fish, 150g, pan-fried) + Tomato Curry (1 cup)",
+                totals: "Approx. 3220 kcal, 142g Protein"
+            },
+            "Day 4": {
+                breakfast: "Oats Upma (1.5 cups, with vegetables & peanuts) + 1 Boiled Egg",
+                midMorningSnack: "Mango slices (1 large) OR Pineapple slices (1 cup) + Cashews (30g)",
+                lunch: "Kappa (Tapioca) (2 cups cooked) with Nadan Beef Fry (150g, if consumed) OR Chicken Curry + Aviyal (1 cup)",
+                eveningSnack: "Coconut slices (50g) + Jaggery (small piece, optional)",
+                dinner: "Appam (3 pcs) with Fish Molee (150g fish, 1.5 cups curry) + Salad",
+                totals: "Approx. 3200 kcal, 135g Protein"
+            },
+            "Day 5": {
+                breakfast: "Idiyappam (5-6 pcs) with Kadala Curry (1.5 cups) + 1 Boiled Egg",
+                midMorningSnack: "Nenthra Pazham (1 large) + Peanut Butter (2 Tbsp) on rice cakes (2)",
+                lunch: "Matta Rice (2 cups cooked) + Nadan Chicken Curry (150g chicken, 1.5 cups curry) + Vendakka (Okra) Thoran (1 cup)",
+                eveningSnack: "Roasted Chickpeas (1 cup) + Lime Juice (sweetened with jaggery)",
+                dinner: "Chapati (4 medium) + Soya Chunk Curry (1.5 cups) + Cucumber Raita (using coconut yogurt if available, or just cucumber salad)",
+                totals: "Approx. 3250 kcal, 150g Protein"
+            },
+            "Day 6": {
+                breakfast: "Puttu (2 pcs) with Green Gram (Cherupayar) Curry (1.5 cups) + 2 Scrambled Eggs",
+                midMorningSnack: "Mixed Fruit Salad (banana, papaya, pineapple - 2 cups) + Seeds (1 Tbsp flax/chia)",
+                lunch: "Matta Rice (2 cups cooked) + Fish Curry (Mackerel/Ayala, 150g fish, 1.5 cups curry) + Olan (1 cup)",
+                eveningSnack: "Pazham Pori (2 pcs, pan-fried)",
+                dinner: "Dosa (3 medium) with Egg Curry (2 eggs) + Sambar (1 cup)",
+                totals: "Approx. 3190 kcal, 140g Protein"
+            },
+            "Day 7": {
+                breakfast: "Appam (3 pcs) with Chicken Stew (coconut milk, 150g chicken, 1.5 cups)",
+                midMorningSnack: "Coconut Water (300ml) + Handful of Mixed Nuts & Dates (3-4)",
+                lunch: "Vegetable Biryani (made with coconut milk, 2.5 cups) + Boiled Egg (1)",
+                eveningSnack: "Steamed Tapioca (Kappa) with spicy chutney (1 cup)",
+                dinner: "Matta Rice (1.5 cups cooked) + Lentil and Vegetable Curry (1.5 cups) + Pan-fried Fish (100g)",
+                totals: "Approx. 3230 kcal, 137g Protein"
+            }
+        };
+
+        const daySelector = document.getElementById('day-selector');
+        const mealPlanContent = document.getElementById('meal-plan-content');
+
+        function displayDayMeal(day) {
+            const dayData = mealPlanData[day];
+            if (!dayData) return;
+
+            mealPlanContent.innerHTML = `
+                <div class="p-4 rounded-lg border border-DCD3CC bg-amber-50">
+                    <h4 class="font-semibold text-amber-700 mb-1">🌅 Breakfast:</h4>
+                    <p class="content-text text-sm text-amber-600">${dayData.breakfast}</p>
+                </div>
+                <div class="p-4 rounded-lg border border-DCD3CC bg-teal-50">
+                    <h4 class="font-semibold text-teal-700 mb-1">🍵 Mid-Morning Snack:</h4>
+                    <p class="content-text text-sm text-teal-600">${dayData.midMorningSnack}</p>
+                </div>
+                <div class="p-4 rounded-lg border border-DCD3CC bg-sky-50">
+                    <h4 class="font-semibold text-sky-700 mb-1">☀️ Lunch:</h4>
+                    <p class="content-text text-sm text-sky-600">${dayData.lunch}</p>
+                </div>
+                <div class="p-4 rounded-lg border border-DCD3CC bg-rose-50">
+                    <h4 class="font-semibold text-rose-700 mb-1">🍎 Evening Snack:</h4>
+                    <p class="content-text text-sm text-rose-600">${dayData.eveningSnack}</p>
+                </div>
+                <div class="p-4 rounded-lg border border-DCD3CC bg-indigo-50">
+                    <h4 class="font-semibold text-indigo-700 mb-1">🌙 Dinner:</h4>
+                    <p class="content-text text-sm text-indigo-600">${dayData.dinner}</p>
+                </div>
+                <div class="p-4 rounded-lg border border-C87E60 bg-C87E60 text-white mt-4">
+                    <h4 class="font-semibold mb-1">📊 Daily Totals:</h4>
+                    <p class="text-sm">${dayData.totals}</p>
+                </div>
+            `;
+
+            document.querySelectorAll('.nav-button').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent === day) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+        
+        Object.keys(mealPlanData).forEach((day, index) => {
+            const button = document.createElement('button');
+            button.textContent = day;
+            button.className = 'nav-button';
+            if (index === 0) button.classList.add('active');
+            button.onclick = () => displayDayMeal(day);
+            daySelector.appendChild(button);
+        });
+
+        function processChartLabel(label, maxLength = 16) {
+            if (typeof label !== 'string' || label.length <= maxLength) {
                 return label;
             }
             const words = label.split(' ');
@@ -300,106 +498,97 @@
             lines.push(currentLine.trim());
             return lines;
         }
-
+        
         const commonTooltipTitleCallback = function(tooltipItems) {
             const item = tooltipItems[0];
             let label = item.chart.data.labels[item.dataIndex];
             if (Array.isArray(label)) {
               return label.join(' ');
-            } else {
+            } else if (typeof label === 'string'){
               return label;
             }
+            return '';
         };
 
-        const macroData = {
-            labels: [processLabel('Protein 17.5%'), processLabel('Carbohydrates 57.2%'), processLabel('Fats 25.3%')],
-            datasets: [{
-                label: 'Macronutrient Distribution',
-                data: [17.5, 57.2, 25.3],
-                backgroundColor: [
-                    '#3E92CC', 
-                    '#FFF275', 
-                    '#1B998B'  
-                ],
-                borderColor: [
-                    '#FFFFFF',
-                    '#FFFFFF',
-                    '#FFFFFF'
-                ],
-                borderWidth: 2,
-                hoverOffset: 4
-            }]
-        };
-
-        const macroConfig = {
-            type: 'doughnut',
-            data: macroData,
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            font: {
-                                size: 12,
-                                family: 'Inter'
-                            },
-                            color: '#0A2463',
-                             boxWidth: 15,
-                             padding: 15,
-                             generateLabels: function(chart) {
-                                const data = chart.data;
-                                if (data.labels.length && data.datasets.length) {
-                                    return data.labels.map(function(label, i) {
-                                        const meta = chart.getDatasetMeta(0);
-                                        const style = meta.controller.getStyle(i);
-                                        let displayLabel = Array.isArray(label) ? label.join(' ') : label;
-                                        
-                                        return {
-                                            text: displayLabel,
-                                            fillStyle: style.backgroundColor,
-                                            strokeStyle: style.borderColor,
-                                            lineWidth: style.borderWidth,
-                                            hidden: !chart.getDataVisibility(i),
-                                            index: i
-                                        };
-                                    });
+        const macroCtx = document.getElementById('macroNutrientChart');
+        if (macroCtx) {
+            new Chart(macroCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                        processChartLabel('Protein (17.5%)'), 
+                        processChartLabel('Carbohydrates (57.2%)'), 
+                        processChartLabel('Fats (25.3%)')
+                    ],
+                    datasets: [{
+                        label: 'Macronutrient Distribution',
+                        data: [17.5, 57.2, 25.3],
+                        backgroundColor: ['#C87E60', '#A89F98', '#DCD3CC'],
+                        borderColor: '#FAF7F5',
+                        borderWidth: 3,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#4A4440',
+                                font: { family: 'Inter', size: 12 },
+                                padding: 15,
+                                boxWidth: 12,
+                                generateLabels: function(chart) {
+                                    const data = chart.data;
+                                    if (data.labels.length && data.datasets.length) {
+                                        return data.labels.map(function(label, i) {
+                                            const meta = chart.getDatasetMeta(0);
+                                            const style = meta.controller.getStyle(i);
+                                            let displayLabel = Array.isArray(label) ? label.join(' ') : (typeof label === 'string' ? label : '');
+                                            return {
+                                                text: displayLabel,
+                                                fillStyle: style.backgroundColor,
+                                                strokeStyle: style.borderColor,
+                                                lineWidth: style.borderWidth,
+                                                hidden: !chart.getDataVisibility(i),
+                                                index: i
+                                            };
+                                        });
+                                    }
+                                    return [];
                                 }
-                                return [];
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: '#4A4440',
+                            titleColor: '#FAF7F5',
+                            bodyColor: '#FAF7F5',
+                            titleFont: { size: 14, family: 'Inter', weight: '600' },
+                            bodyFont: { size: 12, family: 'Inter' },
+                            padding: 12,
+                            callbacks: {
+                                title: commonTooltipTitleCallback,
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed.toFixed(1) + '%';
+                                    }
+                                    return label;
+                                }
                             }
                         }
                     },
-                    tooltip: {
-                        backgroundColor: '#0A2463',
-                        titleFont: { size: 14, family: 'Inter', weight: 'bold' },
-                        bodyFont: { size: 12, family: 'Inter' },
-                        padding: 10,
-                        callbacks: {
-                            title: commonTooltipTitleCallback,
-                            label: function(context) {
-                                let label = context.dataset.label || '';
-                                if (label) {
-                                    label += ': ';
-                                }
-                                if (context.parsed !== null) {
-                                    label += context.parsed.toFixed(1) + '%';
-                                }
-                                return label;
-                            }
-                        }
-                    }
-                },
-                cutout: '60%',
-            }
-        };
-
-        window.onload = function() {
-            const macroCtx = document.getElementById('macroNutrientChart');
-            if (macroCtx) {
-                new Chart(macroCtx, macroConfig);
-            }
-        };
+                    cutout: '65%'
+                }
+            });
+        }
+        
+        displayDayMeal('Day 1'); // Initialize with Day 1
     </script>
 </body>
 </html>
